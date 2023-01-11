@@ -3,7 +3,7 @@ import jakarta.persistence.Persistence
 
 fun main(args: Array<String>) {
 
-    // Creamos una
+    // Creamos una instancia de entityManager mediante managerFactory
     val entityManagerFactory = Persistence.createEntityManagerFactory("ADA03")
     val entityManager = entityManagerFactory.createEntityManager()
 
