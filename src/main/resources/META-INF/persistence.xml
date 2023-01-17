@@ -9,6 +9,7 @@
         <class>Cliente</class>
         <class>Direccion</class>
         <class>Taller</class>
+        <class>Pedido</class>
 
         <properties>
             <!--Buenas Diego. Aquí he cambiado el driver de la base de datos para utilizar el driver de H2, además de

@@ -1,6 +1,5 @@
 import jakarta.persistence.Persistence
 
-
 fun main(args: Array<String>) {
 
     // Creamos una instancia de entityManager mediante managerFactory
@@ -28,11 +27,24 @@ fun main(args: Array<String>) {
     entityManager.persist(taller1)
     entityManager.persist(taller2)
 
-    val cliente1 = Cliente(nombre = "Juan", ciudad = "Chiclana de la Frontera", edad = 22, direccion = direccion3)
-    val cliente2 = Cliente(nombre = "Pablo", ciudad = "San Fernando", edad = 32, direccion = direccion4)
+    val cliente1 = Cliente(
+        dni = "31312644C",
+        nombre = "Juan",
+        ciudad = "Chiclana de la Frontera",
+        edad = 22,
+        direccion = direccion3
+    )
+    val cliente2 =
+        Cliente(dni = "12345678A", nombre = "Pablo", ciudad = "San Fernando", edad = 32, direccion = direccion4)
 
     entityManager.persist(cliente1)
     entityManager.persist(cliente2)
+
+    val pedido1 = Pedido(descripcion = "THERMOMIX", cliente = cliente1)
+    val pedido2 = Pedido(descripcion = "Amortiguador", taller = taller1)
+
+    entityManager.persist(pedido1)
+    entityManager.persist(pedido2)
 
     // Una vez persistidos, guardamos los cambios en la base de datos con .commit
     transaction.commit()
@@ -47,9 +59,12 @@ fun main(args: Array<String>) {
     val tallerQuery = entityManager.createQuery("from Taller", Taller::class.java)
     val tallerResultList = tallerQuery.resultList
 
+    val pedidoQuery = entityManager.createQuery("from Pedido", Pedido::class.java)
+    val pedidoResultList = pedidoQuery.resultList
+
     // Y recorremos cada uno de los resultados, imprimiendo los valores por consola
     println("DIRECCIONES\n")
-    for (result in direccionResultList){
+    for (result in direccionResultList) {
         println("ID: ${result.id}")
         println(result.calle)
         println(result.codigopostal)
@@ -57,8 +72,8 @@ fun main(args: Array<String>) {
     }
 
     println("CLIENTES\n")
-    for (result in clienteResultList){
-        println("ID: ${result.id}")
+    for (result in clienteResultList) {
+        println(result.dni)
         println(result.nombre)
         println(result.ciudad)
         println(result.edad)
@@ -66,11 +81,22 @@ fun main(args: Array<String>) {
     }
 
     println("TALLERES\n")
-    for (result in tallerResultList){
-        println("ID: ${result.id}")
+    for (result in tallerResultList) {
         println(result.CIF)
         println(result.nombre)
         println("${result.direccion.calle}, Nº${result.direccion.numero}, ${result.direccion.codigopostal}\n")
+    }
+
+    println("PEDIDOS\n")
+    for (result in pedidoResultList) {
+        println("ID: " + result.id)
+        if (result.cliente != null) {
+            println(result.cliente?.nombre)
+        }
+        if (result.taller != null) {
+            println(result.taller?.nombre)
+        }
+        println(result.descripcion)
     }
 
 
